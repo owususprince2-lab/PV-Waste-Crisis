@@ -4,351 +4,170 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ghana's End-of-Life PVs: Crisis or Opportunities</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --sun: #F5A623;
-      --earth: #2C4A1E;
-      --soil: #7B4F2A;
-      --ash: #333333;
-      --paper: #FAF7F2;
-      --accent: #C0392B;
-      --light-green: #EAF2E3;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --sun:#F5A623;--earth:#2C4A1E;--soil:#7B4F2A;
+      --sky:#D4E9F7;--ash:#333;--paper:#FAF7F2;--accent:#C0392B;
     }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--paper);
-      color: var(--ash);
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-weight: 300;
-      line-height: 1.85;
-    }
+    html{scroll-behavior:smooth}
+    body{background:var(--paper);color:var(--ash);font-family:'Source Serif 4',Georgia,serif;font-weight:300;line-height:1.85;font-size:1rem}
 
-    /* ── PDF DOWNLOAD BAR ── */
-    #pdf-bar {
-      background: var(--earth);
-      padding: 10px 32px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 12px;
+    /* ── TOP BAR ── */
+    .top-bar{
+      background:#fff;border-bottom:2px solid #e4ddd3;
+      padding:16px 40px;
+      display:flex;align-items:center;justify-content:space-between;gap:20px;
+      flex-wrap:wrap;
     }
-    #pdf-bar span {
-      color: rgba(250,247,242,0.6);
-      font-size: 0.8rem;
-      font-family: 'Source Serif 4', serif;
+    .logo-group{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+    .logo-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+    .logo-item img{
+      height:60px;width:auto;max-width:140px;object-fit:contain;
+      display:block;
     }
-    .btn-pdf {
-      background: var(--sun);
-      color: #1a1a1a;
-      border: none;
-      padding: 8px 22px;
-      font-family: 'Source Serif 4', serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      border-radius: 3px;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      transition: background 0.2s;
+    /* Fallback text badge when image fails */
+    .logo-fallback{
+      display:none;flex-direction:column;align-items:center;justify-content:center;
+      height:60px;min-width:110px;padding:6px 12px;
+      border:2px solid var(--earth);border-radius:4px;
+      font-family:'Source Serif 4',serif;font-weight:700;font-size:0.6rem;
+      line-height:1.35;text-align:center;color:var(--earth);
+      letter-spacing:0.04em;text-transform:uppercase;
     }
-    .btn-pdf:hover { background: #e6981a; }
-    .btn-pdf:disabled { opacity: 0.6; cursor: default; }
+    .logo-fallback b{font-size:0.82rem;color:var(--earth);display:block;margin-bottom:2px}
+    .logo-caption{font-size:0.6rem;color:#777;letter-spacing:0.05em;text-align:center;max-width:130px}
 
-    /* ── INSTITUTION LOGOS BAR ── */
-    .inst-bar {
-      background: #ffffff;
-      border-bottom: 3px solid var(--light-green);
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      gap: 0;
-      flex-wrap: wrap;
+    .pdf-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--earth);color:#fff;
+      border:none;border-radius:4px;padding:10px 22px;
+      font-family:'Source Serif 4',serif;font-size:0.8rem;font-weight:600;
+      letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;
+      text-decoration:none;white-space:nowrap;transition:background .2s;flex-shrink:0;
     }
-    .inst-logos {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      flex-wrap: wrap;
-    }
-    .inst-logo-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      padding: 0 28px;
-    }
-    .inst-logo-block img {
-      height: 72px;
-      width: auto;
-      object-fit: contain;
-    }
-    .inst-logo-block .label {
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--earth);
-      text-align: center;
-      max-width: 130px;
-      line-height: 1.4;
-    }
-    .inst-divider {
-      width: 1px;
-      height: 64px;
-      background: #ddd;
-      flex-shrink: 0;
-    }
-    /* Inline SVG icon badge for Dept */
-    .dept-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      padding: 0 28px;
-    }
-    .dept-badge .label {
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--earth);
-      text-align: center;
-      max-width: 130px;
-      line-height: 1.4;
-    }
+    .pdf-btn:hover{background:#1a2e10}
 
     /* ── HERO ── */
-    .hero {
-      background: var(--earth);
-      color: var(--paper);
-      padding: 64px 40px 52px;
-      position: relative;
-      overflow: hidden;
+    .hero{background:var(--earth);color:var(--paper);padding:70px 40px 56px;position:relative;overflow:hidden}
+    .hero::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 80% 20%,rgba(245,166,35,.18) 0%,transparent 60%),
+                 radial-gradient(ellipse at 10% 90%,rgba(192,57,43,.12) 0%,transparent 50%);
     }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 80% 20%, rgba(245,166,35,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 10% 90%, rgba(192,57,43,0.12) 0%, transparent 50%);
-    }
-    .hero-inner { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
-    .hero-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--sun);
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 900;
-      line-height: 1.15;
-      margin-bottom: 26px;
-    }
-    .hero h1 em { font-style: italic; color: var(--sun); }
-    .hero-authors {
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: rgba(250,247,242,0.75);
-      border-top: 1px solid rgba(250,247,242,0.2);
-      padding-top: 18px;
-    }
-    .hero-authors strong { color: #b8daf0; font-weight: 600; }
-    .hero-authors sup { font-size: 0.7em; }
+    .hero-inner{max-width:820px;margin:0 auto;position:relative;z-index:1}
+    .hero-label{font-weight:600;font-size:0.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sun);margin-bottom:22px}
+    .hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:900;line-height:1.15;margin-bottom:28px}
+    .hero h1 em{font-style:italic;color:var(--sun)}
+    .hero-authors{font-size:0.9rem;font-weight:400;color:rgba(250,247,242,.72);border-top:1px solid rgba(250,247,242,.2);padding-top:18px}
+    .hero-authors strong{color:var(--sky);font-weight:600}
 
     /* ── STRIPE ── */
-    .stripe { height: 5px; background: linear-gradient(90deg, var(--sun) 0%, var(--accent) 50%, var(--earth) 100%); }
+    .stripe{height:5px;background:linear-gradient(90deg,var(--sun) 0%,var(--accent) 50%,var(--earth) 100%)}
 
     /* ── ARTICLE ── */
-    article { max-width: 780px; margin: 0 auto; padding: 56px 32px 80px; }
+    article{max-width:780px;margin:0 auto;padding:56px 32px 80px}
 
     /* ── SECTION BLOCKS ── */
-    .section-block { margin-bottom: 52px; }
-    .section-label {
-      font-size: 0.67rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--sun);
-      font-weight: 600;
-      margin-bottom: 4px;
-      display: block;
-    }
-    .section-block h2 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(1.3rem, 3vw, 1.9rem);
-      font-weight: 700;
-      color: var(--earth);
-      line-height: 1.25;
-      margin-bottom: 18px;
-    }
-    .section-block p { margin-bottom: 15px; font-size: 1rem; }
-    .intro-block p { font-size: 1.05rem; font-weight: 400; }
-
-    /* ── STAT CARDS ── */
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-      gap: 14px;
-      margin: 28px 0;
-    }
-    .stat-card { background: var(--earth); color: var(--paper); border-radius: 3px; padding: 20px 18px; }
-    .stat-card .num {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      font-weight: 900;
-      color: var(--sun);
-      display: block;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-    .stat-card .desc { font-size: 0.8rem; color: rgba(250,247,242,0.75); line-height: 1.4; }
-
-    /* ── PULL QUOTE ── */
-    .pull-quote {
-      border-left: 4px solid var(--sun);
-      background: #FFF8EE;
-      margin: 30px 0;
-      padding: 18px 26px;
-      font-family: 'Playfair Display', Georgia, serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--soil);
-      line-height: 1.55;
-    }
+    .section-block{margin-bottom:52px}
+    .section-label{font-size:0.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sun);font-weight:600;margin-bottom:2px}
+    .section-block h2{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.35rem,2.8vw,1.9rem);font-weight:700;color:var(--earth);line-height:1.22;margin-bottom:18px}
+    .section-block p{margin-bottom:15px;font-size:1.01rem}
 
     /* ── DIVIDER ── */
-    hr.divider { border: none; border-top: 1px solid rgba(44,74,30,0.15); margin: 44px 0; }
+    hr.divider{border:none;border-top:1px solid rgba(44,74,30,.15);margin:44px 0}
 
     /* ── REFERENCES ── */
-    .references { background: #F2EDE6; border-radius: 5px; padding: 36px 32px; margin-top: 56px; }
-    .references h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      color: var(--earth);
-      margin-bottom: 22px;
-      font-weight: 700;
-    }
-    .references ol { padding-left: 20px; }
-    .references li { font-size: 0.8rem; margin-bottom: 9px; line-height: 1.55; color: #555; }
-    .references a { color: var(--soil); word-break: break-all; }
+    .references{background:#F2EDE6;border-radius:6px;padding:38px 34px;margin-top:56px}
+    .references h2{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--earth);margin-bottom:22px;font-weight:700}
+    .references ol{padding-left:20px}
+    .references li{font-size:0.83rem;margin-bottom:10px;line-height:1.55;color:#555}
+    .references a{color:var(--soil);word-break:break-all}
+    .references a:hover{color:var(--earth)}
 
     /* ── FOOTER ── */
-    footer {
-      background: var(--earth);
-      color: rgba(250,247,242,0.5);
-      text-align: center;
-      font-size: 0.76rem;
-      padding: 26px 20px;
-    }
+    footer{background:var(--earth);color:rgba(250,247,242,.55);text-align:center;font-size:0.78rem;padding:26px 20px}
 
     /* ── PRINT ── */
-    @media print {
-      #pdf-bar { display: none !important; }
+    @media print{
+      .pdf-btn{display:none!important}
+      .top-bar{border-bottom:1pt solid #ccc;padding:10pt 20pt;break-after:avoid}
+      .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;break-after:avoid}
+      .stripe{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      article{padding:16pt 20pt 40pt}
+      .references{background:#f5f0ea;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}
     }
 
-    @media (max-width: 600px) {
-      .inst-bar { padding: 14px 16px; }
-      .inst-logo-block, .dept-badge { padding: 0 14px; }
-      .inst-logo-block img { height: 54px; }
-      .hero { padding: 48px 22px 40px; }
-      article { padding: 40px 18px 60px; }
-      .references { padding: 24px 18px; }
-      #pdf-bar { padding: 10px 18px; }
+    @media(max-width:640px){
+      .top-bar{padding:12px 16px;gap:14px}
+      .hero{padding:48px 20px 40px}
+      article{padding:36px 18px 56px}
+      .references{padding:26px 18px}
     }
   </style>
 </head>
 <body>
 
-<!-- PDF DOWNLOAD BAR -->
-<div id="pdf-bar">
-  <span>Save this article</span>
-  <button class="btn-pdf" onclick="downloadPDF()">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-      <polyline points="7 10 12 15 17 10"/>
-      <line x1="12" y1="15" x2="12" y2="3"/>
+<!-- TOP BAR WITH LOGOS -->
+<div class="top-bar">
+  <div class="logo-group">
+
+    <!-- 1. Brew-Hammond Energy Centre -->
+    <div class="logo-item">
+      <img
+        src="https://energycentre.knust.edu.gh/sites/devsite5.knust.edu.gh/files/inline-images/energycentrelogo.jpg"
+        alt="The Brew-Hammond Energy Centre, KNUST"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="logo-fallback">
+        <b>TBHEC</b>The Brew-Hammond<br>Energy Centre<br>KNUST
+      </div>
+      <span class="logo-caption">The Brew-Hammond Energy Centre</span>
+    </div>
+
+    <!-- 2. College of Engineering -->
+    <div class="logo-item">
+      <img
+        src="https://coe.knust.edu.gh/themes/custom/knust_theme/logo.png"
+        alt="College of Engineering, KNUST"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="logo-fallback">
+        <b>CoE</b>College of<br>Engineering<br>KNUST
+      </div>
+      <span class="logo-caption">College of Engineering, KNUST</span>
+    </div>
+
+    <!-- 3. MatESA / Dept. Materials & Metallurgical Engineering -->
+    <div class="logo-item">
+      <img
+        src="https://matesa.knust.edu.gh/sites/default/files/matesa_logo.png"
+        alt="MatESA – Dept. of Materials & Metallurgical Engineering, KNUST"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="logo-fallback">
+        <b>MatESA</b>Dept. Materials &amp;<br>Metallurgical Eng.<br>KNUST
+      </div>
+      <span class="logo-caption">MatESA – Dept. of Materials &amp; Metallurgical Engineering</span>
+    </div>
+
+  </div>
+
+  <!-- PDF DOWNLOAD -->
+  <button class="pdf-btn" onclick="window.print()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15V3m0 12-4-4m4 4 4-4"/><rect x="2" y="17" width="20" height="4" rx="1"/>
     </svg>
     Download PDF
   </button>
 </div>
 
-<!-- INSTITUTION LOGOS BAR -->
-<div class="inst-bar">
-  <div class="inst-logos">
-
-    <!-- KNUST Official Logo -->
-    <div class="inst-logo-block">
-      <img
-        src="https://www.knust.edu.gh/sites/default/files/knust-logo.png"
-        onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/en/thumb/3/3c/KNUST_logo.png/150px-KNUST_logo.png';"
-        alt="KNUST"
-        crossorigin="anonymous"
-      />
-      <span class="label">KNUST · Kumasi, Ghana</span>
-    </div>
-
-    <div class="inst-divider"></div>
-
-    <!-- Brew-Hammond Energy Centre Official Logo -->
-    <div class="inst-logo-block">
-      <img
-        src="https://energycentre.knust.edu.gh/sites/devsite5.knust.edu.gh/files/inline-images/energycentrelogo.jpg"
-        onerror="this.onerror=null; this.style.display='none'; document.getElementById('bhec-text').style.display='flex';"
-        alt="The Brew-Hammond Energy Centre"
-        crossorigin="anonymous"
-        style="max-height:72px;"
-      />
-      <!-- Text fallback if image fails -->
-      <div id="bhec-text" style="display:none; font-family:'Playfair Display',serif; font-weight:700; font-size:0.78rem; color:var(--earth); text-align:center; line-height:1.4; max-width:140px; height:72px; justify-content:center; align-items:center;">
-        The Brew-Hammond<br>Energy Centre
-      </div>
-      <span class="label">The Brew-Hammond Energy Centre</span>
-    </div>
-
-    <div class="inst-divider"></div>
-
-    <!-- Dept of Materials & Metallurgical Engineering — SVG icon -->
-    <div class="dept-badge">
-      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Dept of Materials and Metallurgical Engineering">
-        <circle cx="30" cy="30" r="29" fill="#2C4A1E"/>
-        <!-- outer gear teeth -->
-        <g stroke="#F5A623" stroke-width="2.8" stroke-linecap="round">
-          <line x1="30" y1="7" x2="30" y2="14"/>
-          <line x1="30" y1="46" x2="30" y2="53"/>
-          <line x1="7" y1="30" x2="14" y2="30"/>
-          <line x1="46" y1="30" x2="53" y2="30"/>
-          <line x1="13.5" y1="13.5" x2="18.5" y2="18.5"/>
-          <line x1="41.5" y1="41.5" x2="46.5" y2="46.5"/>
-          <line x1="46.5" y1="13.5" x2="41.5" y2="18.5"/>
-          <line x1="18.5" y1="41.5" x2="13.5" y2="46.5"/>
-        </g>
-        <!-- ring -->
-        <circle cx="30" cy="30" r="11" fill="none" stroke="#F5A623" stroke-width="2.5"/>
-        <!-- centre dot -->
-        <circle cx="30" cy="30" r="5" fill="#F5A623"/>
-      </svg>
-      <span class="label">Dept. of Materials &amp; Metallurgical Engineering</span>
-    </div>
-
-  </div>
-</div>
-
 <!-- HERO -->
 <header class="hero">
   <div class="hero-inner">
-    <p class="hero-label">Research Article &nbsp;·&nbsp; Solar Energy &amp; Waste Management &nbsp;·&nbsp; KNUST</p>
+    <p class="hero-label">Research Article &nbsp;·&nbsp; Solar Energy &amp; Waste Management</p>
     <h1>Ghana's End-of-Life PVs:<br><em>Crisis or Opportunities</em></h1>
     <p class="hero-authors">
-      <strong>Bennetta Koomson<sup>a,b</sup> &amp; Prince Owusu<sup>b</sup></strong><br>
+      <strong>Bennetta Koomson<sup>a,b</sup> &nbsp;&amp;&nbsp; Prince Owusu<sup>b</sup></strong><br>
       <sup>a</sup>The Brew Hammond Energy Center, College of Engineering, Kwame Nkrumah University of Science and Technology, Kumasi<br>
       <sup>b</sup>Department of Materials and Metallurgical Engineering, Kwame Nkrumah University of Science and Technology, Kumasi
     </p>
@@ -356,125 +175,98 @@
 </header>
 <div class="stripe"></div>
 
-<!-- ARTICLE BODY -->
+<!-- ARTICLE BODY — exact content from PDF -->
 <article>
 
-  <!-- INTRODUCTION -->
-  <div class="section-block intro-block">
-    <span class="section-label">Introduction</span>
+  <div class="section-block">
+    <p class="section-label">Introduction</p>
     <p>Ghana's accelerating adoption of solar photovoltaic (PV) technology, while crucial for a sustainable energy transition and addressing persistent power outages, simultaneously presents an impending environmental and economic dilemma concerning end-of-life (EoL) PV modules (Agyeman et al., 2025; Dong et al., 2025; Parikh et al., 2024). Projections indicate a substantial increase in PV waste, raising critical questions about management strategies and the potential for resource recovery versus environmental contamination (Farrell et al., 2020; Heath et al., 2020; Ngagoum Ndalloka et al., 2024).</p>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-card">
-      <span class="num">GHS 60M</span>
-      <span class="desc">Estimated value locked in Ghana's end-of-life PVs</span>
-    </div>
-    <div class="stat-card">
-      <span class="num">324 t</span>
-      <span class="desc">Projected spent PV accumulation in Ghana, 2043–2060</span>
-    </div>
-    <div class="stat-card">
-      <span class="num">78 Mt</span>
-      <span class="desc">Global PV e-waste projected by 2050</span>
-    </div>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 1 -->
   <div class="section-block">
-    <span class="section-label">Act Now or Pay Later</span>
+    <p class="section-label">Act Now or Pay Later</p>
     <h2>The Escalating Cost of Inaction</h2>
     <p>Ghana's end-of-life solar PVs are estimated to hold a value of GHS 60 million. However, this substantial economic potential is juxtaposed with the serious environmental and public health risks associated with inadequate waste management (Owusu-Sekyere &amp; Aladago, 2023). The global proliferation of PV modules is expected to generate 60–78 million tons of solar waste by 2050 (Farrell et al., 2020; Keerthivasan et al., 2024; Preet &amp; Smith, 2024). Developing nations, including those in sub-Saharan Africa, are particularly vulnerable as they often lack the robust infrastructure and regulatory frameworks necessary for proper PV waste management (Badza et al., 2024; Dong et al., 2025; Okoroigwe et al., 2020; Parikh et al., 2024). The absence of comprehensive recycling strategies can lead to hazardous substances, such as lead and cadmium, leaching into the environment from discarded panels, posing significant threats to ecosystems and human health (Petroli et al., 2024; Ullah et al., 2023). Studies have demonstrated that these heavy metals, when leached into municipal solid waste (MSW) landfill leachate, can exceed surface water limits and contribute to environmental pollution (Nain &amp; Kumar, 2020b; Petroli et al., 2024). For example, a 2020 study by Nain and Kumar exposed commercially available PVs to real MSW landfill leachate for a year, observing metal leaching and encapsulant degradation, highlighting the potential for long-term environmental hazards (Nain &amp; Kumar, 2020b). This underscores that without immediate action, the cost of mitigating environmental damage and health impacts will far outweigh the potential revenue from recycling.</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 2 -->
   <div class="section-block">
-    <span class="section-label">The Clock Is Ticking</span>
+    <p class="section-label">The Clock Is Ticking</p>
     <h2>Estimating Future Waste Volumes and Value</h2>
     <p>Between 2043 and 2060, Ghana is projected to accumulate an estimated 324 tonnes of spent PVs (Agyeman et al., 2025). This represents either a looming toxic threat if mismanaged or a significant GHS 60 million recovery opportunity if effectively recycled (Agyeman et al., 2025). The increasing energy demand driven by population growth and commercial activities in African cities has led to widespread adoption of solar PV, particularly off-grid systems, which are seen as a viable option for energy access (Damo et al., 2024; Dong et al., 2025; Parikh et al., 2024). However, this rapid uptake without corresponding end-of-life planning exacerbates the waste challenge (Dong et al., 2025). Global estimates suggest 96,000 tons of PV module waste will be generated worldwide by 2030, escalating to 86 million tons by 2050 (Bošnjaković et al., 2023; Farrell et al., 2020; Ngagoum Ndalloka et al., 2024). The urgency of addressing this issue is further amplified by the typical operational lifespan of PV modules, which is around 25 to 30 years (Anusuya et al., 2023; Singh et al., 2023; Tasnim et al., 2022). As installations from the past two decades reach their end-of-life, the volume of waste will surge dramatically, demanding immediate and forward-thinking solutions (Heath et al., 2020; Iakovou et al., 2024).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 3 -->
   <div class="section-block">
-    <span class="section-label">Spent PV: Poison or Profit?</span>
+    <p class="section-label">Spent PV: Poison or Profit?</p>
     <h2>The Dilemma of Disposal</h2>
     <p>By 2060, the fate of Ghana's projected 324 tonnes of spent PVs remains uncertain: will they end up in recycling plants generating revenue, or will they pollute the environment, food crops, and water sources (Agyeman et al., 2025)? PV waste contains various elements, including mercury, cadmium, chromium, lead, copper, aluminum, and fluorinated compounds, which are toxic if not properly managed (Badza et al., 2024; Cheema et al., 2023; Petroli et al., 2022). The informal electronic waste (e-waste) recycling sector, which handles over 90% of e-waste in countries like Ghana, poses significant risks due to unsafe practices that release toxic pollutants (Owusu-Sekyere &amp; Aladago, 2023). The informal e-waste recycling in Ghana, emphasize the lack of formal processing and the direct release of hazardous materials into the environment, which contributes to human health and environmental risks (Owusu-Sekyere &amp; Aladago, 2023). If these PVs enter the informal waste stream, hazardous substances could leach into the soil and water, contaminating agricultural land and affecting food chains (Owusu-Sekyere &amp; Aladago, 2023). For example, a 2020 study by Nain and Kumar assessed the ecological and human health risks of metals leached from EoL PVs, highlighting potential long-term contamination (Nain &amp; Kumar, 2020a). Conversely, robust recycling initiatives can recover valuable materials like silicon, silver, and copper, contributing to a circular economy and generating economic benefits (Dhawan &amp; Agrawal, 2022; Keerthivasan et al., 2024).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 4 -->
   <div class="section-block">
-    <span class="section-label">Value or Waste?</span>
+    <p class="section-label">Value or Waste?</p>
     <h2>Recovering Critical Metals</h2>
     <p>Can Ghana afford to lose millions in silver, copper, and silicon locked in spent PVs? Each year without action represents lost value and rising toxic risk. PV modules, particularly first-generation crystalline silicon panels, contain valuable materials such as silver, copper, aluminum, and silicon (Dhawan &amp; Agrawal, 2022; Keerthivasan et al., 2024). Silicon-based PV modules are composed of materials including silicon (66.7%), glass (13%), copper (10%), aluminum (6%), and silver (0.1%) (Dhawan &amp; Agrawal, 2022). The economic viability of PV recycling is strongly influenced by the concentration of these valuable materials and the volume of waste processed (Granata et al., 2022). For instance, high silver concentrations (0.2%) can make recycling sustainable even without a recycling fee, provided the PV throughput exceeds 18,000 tons per year (Granata et al., 2022). Methods for recovering silver and silicon from EoL PVs, such as the Gold-REC1 process, are continually being developed to enhance material valorization (Romano et al., 2024). Furthermore, advancements in recycling technologies, including thermal delamination and electrostatic separation, aim to efficiently recover materials like silicon and other metals from discarded panels (Ding et al., 2024; Dias et al., 2022; Niekurzak et al., 2023).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 5 -->
   <div class="section-block">
-    <span class="section-label">Import Less, Recover More</span>
+    <p class="section-label">Import Less, Recover More</p>
     <h2>Localizing the Supply Chain</h2>
     <p>Why does Ghana continue to import copper, silver, and aluminum when these very metals could be recovered from spent PVs? A circular economy approach to PV waste management could significantly reduce Ghana's reliance on imported raw materials. The growing global deployment of PV technology makes the recovery of critical metals a strategic imperative (Keerthivasan et al., 2024). Recycling efforts primarily target metallic resources such as silicon, silver, copper, lead, and tin from first-generation PVs (Keerthivasan et al., 2024). By establishing local recycling infrastructure, Ghana could transform waste into a valuable domestic resource, fostering economic growth and reducing environmental footprint associated with raw material extraction and importation (Ofori, 2023). This shift aligns with principles of a circular economy, which emphasizes reducing, reusing, and recycling resources to minimize waste and maximize resource utility (Ofori, 2023).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 6 -->
   <div class="section-block">
-    <span class="section-label">Hazard or Hidden Asset?</span>
+    <p class="section-label">Hazard or Hidden Asset?</p>
     <h2>Balancing Risks and Rewards</h2>
     <p>Ghana's solar panels contain metals that are both valuable and hazardous. The critical question is whether the nation will recover this wealth or incur significant losses and release toxic risks into the environment. While the financial incentive to recover precious metals like silver, copper, and silicon is considerable, the presence of hazardous materials such as lead and cadmium necessitates careful and regulated recycling processes (Cheema et al., 2023; Petroli et al., 2024). Improper disposal can lead to these heavy metals contaminating soil and water, posing ecological and human health risks (Nain &amp; Kumar, 2020a). For example, cadmium telluride (CdTe) and copper indium gallium selenide (CIGS) modules contain elements like cadmium, lead, and selenium, which can be highly toxic if released (Petroli et al., 2022). Therefore, any recovery strategy must prioritize safe handling and advanced recycling techniques to ensure environmental protection and worker safety, transforming potential hazards into tangible assets.</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 7 -->
   <div class="section-block">
-    <span class="section-label">Clean Energy, Hidden Cost</span>
+    <p class="section-label">Clean Energy, Hidden Cost</p>
     <h2>Environmental Impact of Mismanagement</h2>
     <p>How clean is Ghana's energy transition if hazardous chemicals from mismanaged spent solar panels leach into soil, water, and the food chain? The environmental benefits of solar energy are undeniable, but these benefits are undermined if EoL PV modules are not properly managed (Ullah et al., 2023). The issue of e-waste from PV panels is projected to reach 78 million tonnes by 2050, posing a significant socio-environmental threat (Preet &amp; Smith, 2024). Studies have shown that even broken PV panels can release hazardous metals into leachate, with concentrations of lead and cadmium sometimes exceeding regulatory limits (Nain &amp; Kumar, 2020b; Nain &amp; Kumar, 2021). This contamination can harm agricultural lands, impact water sources, and potentially enter the food chain, leading to long-term health consequences for communities (Nain &amp; Kumar, 2020a). Therefore, a truly "clean" energy transition requires a comprehensive EoL management strategy that prevents such contamination (Nain &amp; Kumar, 2022; Ullah et al., 2023).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 8 -->
   <div class="section-block">
-    <span class="section-label">Buried Wealth, Silent Harm</span>
+    <p class="section-label">Buried Wealth, Silent Harm</p>
     <h2>The Perils of Landfilling PV Waste</h2>
     <p>Should Ghana discard spent solar panels with municipal waste, spreading hazardous materials into communities and burying valuable metals worth millions of cedis? The practice of co-disposing PV waste with general municipal solid waste is particularly problematic. Informal e-waste recycling, prevalent in Ghana, already leads to the release of toxic pollutants and often involves open burning or acid leaching without environmental controls, creating serious health risks for workers and nearby communities (Owusu-Sekyere &amp; Aladago, 2023). Landfilling PV modules can result in the leaching of heavy metals into groundwater and soil over time, especially as the encapsulants degrade (Nain &amp; Kumar, 2020b; Petroli et al., 2024). This not only contaminates the environment but also buries valuable resources that could be recovered through recycling (Hernández-López et al., 2022). The ethical implications for developing nations, where awareness of such risks is low and recycling infrastructure is lacking, are significant (Okoroigwe et al., 2020).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 9 -->
   <div class="section-block">
-    <span class="section-label">Ghana Cannot Wait</span>
+    <p class="section-label">Ghana Cannot Wait</p>
     <h2>The Urgency of Policy and Infrastructure Development</h2>
     <p>Ghana is installing PV systems faster than it is building solutions to manage spent PVs. The critical question is who will bear the health and environmental costs of this imbalance. Sub-Saharan Africa is experiencing a rapid proliferation of PV waste, consisting of elements toxic to human health and the environment if proper management systems are not in place (Badza et al., 2024; Parikh et al., 2024). Despite the clear awareness of environmental and health risks among local populations, little is currently being done to recycle or plan for the management of EoL PVs in developing countries (Okoroigwe et al., 2020). Robust policies, similar to those seen in the European Union and the United States, which include regulations for waste management and recycling targets, are crucial (Nain &amp; Anctil, 2024; Rocha &amp; Neto, 2024). Implementing incentive-based models for collecting EoL solar panels can also significantly improve collection rates, which are critical for effective recycling (Acharya et al., 2024; Miao et al., 2023). The lack of a regulated recycling market often leads to informal dumping, as seen in other countries, hindering proper environmental protection (Miao et al., 2023).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 10 -->
   <div class="section-block">
-    <span class="section-label">Revenue Waiting to Be Unlocked</span>
+    <p class="section-label">Revenue Waiting to Be Unlocked</p>
     <h2>Economic Opportunities from Recycling</h2>
     <p>What if the growing pile of spent PVs, worth GHS 60 million, is actually Ghana's missing chance to grow its economy? The economic potential of PV recycling extends beyond merely recovering materials. It represents an opportunity to create a new green manufacturing sector, generating jobs and fostering innovation (Roy et al., 2024). The global PV recycling market is projected to grow significantly, driven by the increasing volume of EoL modules and the rising value of recovered materials (Cheema et al., 2023; Iakovou et al., 2024). Recycling silicon PV modules, for example, is technically viable, although economic feasibility often depends on processing costs and waste volumes (Dias et al., 2022). However, new processes are emerging that offer cost-effective and environmentally friendly solutions, such as deframing, shredding, and electrostatic separation to concentrate valuable materials (Dias et al., 2022; Ding et al., 2024). Furthermore, recovered silicon can be utilized in value-added applications, such as high-performance silicon-carbon anode materials for batteries, creating new revenue streams (Liao et al., 2023).</p>
   </div>
 
   <hr class="divider"/>
 
-  <!-- SECTION 11 -->
   <div class="section-block">
-    <span class="section-label">Who Moves First?</span>
+    <p class="section-label">Who Moves First?</p>
     <h2>Embracing a Circular Economy for PVs</h2>
     <p>As spent solar panels accumulate across Ghana, will the nation transform this waste into wealth, jobs, and cleaner environments, or will the opportunity pass and risks persist? The transition to a circular economy model for PV modules requires strategic foresight and investment (Amrollahi Biyouki et al., 2024; Farrell et al., 2020; Heath et al., 2020). This includes developing robust collection systems, investing in recycling infrastructure, and implementing supportive policies (Acharya et al., 2024; Amrollahi Biyouki et al., 2024). A circular economy for PVs encompasses reuse, repair, and recycling, all of which contribute to retaining value, reducing pollution, and extending the lifespan of products (Amrollahi Biyouki et al., 2024; Crozier et al., 2025; Walzberg et al., 2021). For example, the repair and reuse of off-grid solar products in the Global South can significantly mitigate e-waste challenges (Munro et al., 2022). Without a proactive approach, Ghana risks facing severe environmental consequences and foregoing substantial economic benefits. The choices made today will determine whether the legacy of solar energy in Ghana is one of sustainable development or an avoidable environmental crisis.</p>
   </div>
@@ -483,49 +275,50 @@
   <div class="references">
     <h2>References</h2>
     <ol>
-      <li>Acharya, A., Verma, A. R., &amp; Bolia, N. B. (2024). Effective collection of end-of-life solar panels through an incentive-based model. <em>Solar Energy, 268</em>, 112215. <a href="https://doi.org/10.1016/j.solener.2023.112215">https://doi.org/10.1016/j.solener.2023.112215</a></li>
-      <li>Agyeman, E., Quansah, D. A., Ntiamoah, A., Mensah, L. D., &amp; Ramde, E. W. (2025). Toward a circular economy in Ghana's renewable energy sector: A quantitative assessment of waste from solar photovoltaic modules in Ghana. <em>International Journal of Green Energy</em>. <a href="https://doi.org/10.1080/15435075.2025.2469136">https://doi.org/10.1080/15435075.2025.2469136</a></li>
-      <li>Amrollahi Biyouki, Z., Zaman, A., Marinova, D., Minunno, R., &amp; Shayegan, M. A. (2024). Solar Photovoltaics Value Chain and End-of-Life Management Practices: A Systematic Literature Review. <em>Sustainability, 16(16)</em>, 7038. <a href="https://doi.org/10.3390/su16167038">https://doi.org/10.3390/su16167038</a></li>
-      <li>Anusuya, K., Vijayakumar, K., &amp; Manikandan, S. (2023). From efficiency to eternity: A holistic review of photovoltaic panel degradation and End-of-Life management. <em>Solar Energy, 264</em>, 112135. <a href="https://doi.org/10.1016/j.solener.2023.112135">https://doi.org/10.1016/j.solener.2023.112135</a></li>
-      <li>Badza, K., Soro, Y. M., &amp; Sawadogo, M. (2024). Photovoltaic waste management in sub-Saharan Africa: current practices in Burkina Faso. <em>Waste Disposal &amp; Sustainable Energy, 2(1)</em>, 1–11. <a href="https://doi.org/10.1007/s42768-023-00184-w">https://doi.org/10.1007/s42768-023-00184-w</a></li>
-      <li>Bošnjaković, M., Galović, M., Kuprešak, J., &amp; Bošnjaković, T. (2023). The End of Life of PV Systems: Is Europe Ready for It? <em>Sustainability, 15(23)</em>, 16466. <a href="https://doi.org/10.3390/su152316466">https://doi.org/10.3390/su152316466</a></li>
-      <li>Cheema, H. A., Ilyas, S., Kang, H., &amp; Kim, H. (2023). Comprehensive review of the global trends and future perspectives for recycling of decommissioned photovoltaic panels. <em>Waste Management</em>. <a href="https://doi.org/10.1016/j.wasman.2023.11.025">https://doi.org/10.1016/j.wasman.2023.11.025</a></li>
-      <li>Crozier, M. N., et al. (2025). Drivers, barriers and enablers of a South African circular solar PV module supply chain: A focus on reuse. <em>Waste Management &amp; Research</em>. <a href="https://doi.org/10.1177/0734242X251340306">https://doi.org/10.1177/0734242X251340306</a></li>
-      <li>Damo, U. M., et al. (2024). Solar PV potential in Africa for three generational time-scales. <em>Solar Energy, 273</em>, 112638. <a href="https://doi.org/10.1016/j.solener.2024.112638">https://doi.org/10.1016/j.solener.2024.112638</a></li>
-      <li>Dhawan, N., &amp; Agrawal, S. (2022). Recycling of discarded photovoltaic solar modules for metal recovery. <em>Mining Metallurgy &amp; Exploration, 39(6)</em>, 2379–2387. <a href="https://doi.org/10.1007/s42461-022-00699-6">https://doi.org/10.1007/s42461-022-00699-6</a></li>
-      <li>Dias, P. R., et al. (2022). High yield, low cost, environmentally friendly process to recycle silicon solar panels. <em>Renewable and Sustainable Energy Reviews, 169</em>, 112900. <a href="https://doi.org/10.1016/j.rser.2022.112900">https://doi.org/10.1016/j.rser.2022.112900</a></li>
-      <li>Ding, Y., He, J., Zhang, S., Jian, J., Shi, Z., &amp; Cao, A. (2024). Efficient and comprehensive recycling of valuable components from scrapped Si-based photovoltaic panels. <em>Waste Management, 173</em>, 218–227. <a href="https://doi.org/10.1016/j.wasman.2023.12.052">https://doi.org/10.1016/j.wasman.2023.12.052</a></li>
-      <li>Dong, D., et al. (2025). Solar Photovoltaic Development in West Africa Will Face Million-Ton Waste Challenges, and Off-Grid Systems Will Dominate. <em>Environmental Science &amp; Technology</em>. <a href="https://doi.org/10.1021/acs.est.5c06339">https://doi.org/10.1021/acs.est.5c06339</a></li>
-      <li>Farrell, C. C., et al. (2020). Technical challenges and opportunities in realising a circular economy for waste photovoltaic modules. <em>Renewable and Sustainable Energy Reviews, 129</em>, 109911. <a href="https://doi.org/10.1016/j.rser.2020.109911">https://doi.org/10.1016/j.rser.2020.109911</a></li>
-      <li>Granata, G., Altimari, P., Pagnanelli, F., &amp; De Greef, J. (2022). Recycling of solar photovoltaic panels: Techno-economic assessment in waste management perspective. <em>Journal of Cleaner Production, 363</em>, 132386. <a href="https://doi.org/10.1016/j.jclepro.2022.132385">https://doi.org/10.1016/j.jclepro.2022.132385</a></li>
-      <li>Heath, G. A., et al. (2020). Research and development priorities for silicon photovoltaic module recycling to support a circular economy. <em>Nature Energy, 5(7)</em>, 541–552. <a href="https://doi.org/10.1038/s41560-020-0645-2">https://doi.org/10.1038/s41560-020-0645-2</a></li>
-      <li>Hernández-López, D. A., et al. (2022). Does recycling solar panels make this renewable resource sustainable? <em>Sustainable Cities and Society, 76</em>, 103539. <a href="https://doi.org/10.1016/j.scs.2021.103539">https://doi.org/10.1016/j.scs.2021.103539</a></li>
-      <li>Iakovou, E., et al. (2024). Next-generation reverse logistics networks of photovoltaic recycling. <em>Solar Energy, 269</em>, 112329. <a href="https://doi.org/10.1016/j.solener.2024.112329">https://doi.org/10.1016/j.solener.2024.112329</a></li>
-      <li>Keerthivasan, T., Madhesh, R., Srinivasan, M., &amp; Ramasamy, P. (2024). Photovoltaic recycling: enhancing silicon wafer recovery process from damaged solar panels. <em>Journal of Materials Science: Materials in Electronics</em>. <a href="https://doi.org/10.1007/s10854-024-12662-w">https://doi.org/10.1007/s10854-024-12662-w</a></li>
-      <li>Liao, Q., et al. (2023). High-performance silicon carbon anodes based on value-added recycling strategy of end-of-life photovoltaic modules. <em>Energy, 281</em>, 128345. <a href="https://doi.org/10.1016/j.energy.2023.128345">https://doi.org/10.1016/j.energy.2023.128345</a></li>
-      <li>Miao, S., Zhang, Q., Liu, C., &amp; Wang, L. (2023). Can the deposit-return scheme promote recycling of waste PV modules in China? <em>Solar Energy, 264</em>, 112136. <a href="https://doi.org/10.1016/j.solener.2023.112136">https://doi.org/10.1016/j.solener.2023.112136</a></li>
-      <li>Munro, P. G., et al. (2022). Towards a repair research agenda for off-grid solar e-waste in the Global South. <em>Nature Energy, 7(9)</em>, 834–836. <a href="https://doi.org/10.1038/s41560-022-01103-9">https://doi.org/10.1038/s41560-022-01103-9</a></li>
-      <li>Nain, P., &amp; Anctil, A. (2024). End-of-life solar photovoltaic waste management: A comparison as per EU and US regulatory approaches. <em>Resources, Conservation &amp; Recycling Advances, 21</em>, 200212. <a href="https://doi.org/10.1016/j.rcradv.2024.200212">https://doi.org/10.1016/j.rcradv.2024.200212</a></li>
-      <li>Nain, P., &amp; Kumar, A. (2020a). Ecological and human health risk assessment of metals leached from end-of-life solar photovoltaics. <em>Environmental Pollution, 267</em>, 115393. <a href="https://doi.org/10.1016/j.envpol.2020.115393">https://doi.org/10.1016/j.envpol.2020.115393</a></li>
-      <li>Nain, P., &amp; Kumar, A. (2020b). Metal dissolution from end-of-life solar photovoltaics in real landfill leachate versus synthetic solutions: One-year study. <em>Waste Management, 114</em>, 182–192. <a href="https://doi.org/10.1016/j.wasman.2020.07.004">https://doi.org/10.1016/j.wasman.2020.07.004</a></li>
-      <li>Nain, P., &amp; Kumar, A. (2021). Understanding metal dissolution from solar photovoltaics in MSW leachate under standard waste characterization conditions. <em>Waste Management, 123</em>, 137–146. <a href="https://doi.org/10.1016/j.wasman.2021.01.013">https://doi.org/10.1016/j.wasman.2021.01.013</a></li>
-      <li>Nain, P., &amp; Kumar, A. (2022). A state-of-art review on end-of-life solar photovoltaics. <em>Journal of Cleaner Production, 343</em>, 130978. <a href="https://doi.org/10.1016/j.jclepro.2022.130978">https://doi.org/10.1016/j.jclepro.2022.130978</a></li>
-      <li>Ngagoum Ndalloka, Z., Nair, H. V., Alpert, S., &amp; Schmid, C. (2024). Solar photovoltaic recycling strategies. <em>Solar Energy, 269</em>, 112379. <a href="https://doi.org/10.1016/j.solener.2024.112379">https://doi.org/10.1016/j.solener.2024.112379</a></li>
-      <li>Niekurzak, M., Lewicki, J., Coban, M., &amp; Brelik, M. (2023). Conceptual Design of a Semi-Automatic Process Line for Recycling Photovoltaic Panels. <em>Sustainability, 15(3)</em>, 2822. <a href="https://doi.org/10.3390/su15032822">https://doi.org/10.3390/su15032822</a></li>
-      <li>Ofori, P. (2023). Circular economy practices in third world nations: challenges and implications for environmental sustainability. <em>Environment, Development and Sustainability</em>. <a href="https://doi.org/10.1007/s10668-023-03939-x">https://doi.org/10.1007/s10668-023-03939-x</a></li>
-      <li>Okoroigwe, F. C., Okoroigwe, E. C., Ajayi, O. O., Agbo, S. N., &amp; Chukwuma, J. N. (2020). Photovoltaic Modules Waste Management: Ethical Issues for Developing Nations. <em>Energy Technology, 8(10)</em>, 2000543. <a href="https://doi.org/10.1002/ente.202000543">https://doi.org/10.1002/ente.202000543</a></li>
-      <li>Owusu-Sekyere, K., &amp; Aladago, D. A. (2023). Material flow analysis and risk evaluation of informal E-waste recycling processes in Ghana. <em>Journal of Cleaner Production, 433</em>, 139706. <a href="https://doi.org/10.1016/j.jclepro.2023.139706">https://doi.org/10.1016/j.jclepro.2023.139706</a></li>
-      <li>Parikh, P., Wang, R., &amp; Meng, J. (2024). The potential and challenges of off-grid solar photovoltaics in resource-challenged settings. <em>Nature Reviews Materials, 9(4)</em>, 263–274. <a href="https://doi.org/10.1038/s41578-024-00660-7">https://doi.org/10.1038/s41578-024-00660-7</a></li>
-      <li>Petroli, P. A., Camargo, P. S. S., &amp; Veit, H. M. (2022). Assessment of the environmental toxicity of four photovoltaic module technologies. <em>Engenharia Sanitaria e Ambiental, 27(6)</em>, 1144–1152. <a href="https://doi.org/10.1590/s1413-415220240083">https://doi.org/10.1590/s1413-415220240083</a></li>
-      <li>Petroli, P. A., et al. (2024). Assessment of toxicity tests for photovoltaic panels: a review. <em>Current Opinion in Green and Sustainable Chemistry, 47</em>, 100885. <a href="https://doi.org/10.1016/j.cogsc.2024.100885">https://doi.org/10.1016/j.cogsc.2024.100885</a></li>
-      <li>Preet, S., &amp; Smith, S. T. (2024). A comprehensive review on the recycling technology of silicon based photovoltaic solar panels. <em>Journal of Cleaner Production, 447</em>, 141661. <a href="https://doi.org/10.1016/j.jclepro.2024.141661">https://doi.org/10.1016/j.jclepro.2024.141661</a></li>
-      <li>Rocha, Á. G., &amp; Neto, B. (2024). Circular Economy in Photovoltaics: An Analysis of Global Regulations and Their Implications in Brazil. <em>ARACÃŠ, 6(3)</em>, 80–91. <a href="https://doi.org/10.56238/arev6n3-080">https://doi.org/10.56238/arev6n3-080</a></li>
-      <li>Romano, P., Lanzone, C., Rahmati, S., Ippolito, N. M., Ferella, F., &amp; Vegliò, F. (2024). A Kinetic Study of Silver Extraction from End-of-Life Photovoltaic Panels through Gold-REC1 Process. <em>Sustainability, 16(17)</em>, 7846. <a href="https://doi.org/10.3390/su16177846">https://doi.org/10.3390/su16177846</a></li>
-      <li>Roy, M., Jha, M. K., &amp; Bhattacharya, S. (2024). Techno-economic perspectives on solar photovoltaic recycling as an emerging green manufacturing sector in India. <em>Microsystem Technologies</em>. <a href="https://doi.org/10.1007/s00542-024-05707-x">https://doi.org/10.1007/s00542-024-05707-x</a></li>
-      <li>Singh, S., Powar, S., &amp; Dhar, A. (2023). End of life management of crystalline silicon and cadmium telluride photovoltaic modules utilising life cycle assessment. <em>Resources, Conservation and Recycling, 197</em>, 107097. <a href="https://doi.org/10.1016/j.resconrec.2023.107097">https://doi.org/10.1016/j.resconrec.2023.107097</a></li>
-      <li>Tasnim, S. S., Hasan, M. M., Shammi, M., Tareq, S. M., &amp; Rahman, M. M. (2022). Current challenges and future perspectives of solar-PV cell waste in Bangladesh. <em>Heliyon, 8(2)</em>, e08970. <a href="https://doi.org/10.1016/j.heliyon.2022.e08970">https://doi.org/10.1016/j.heliyon.2022.e08970</a></li>
-      <li>Ullah, N., Ahmad, A., Sarfaraz, R., Khalid, S., Ali, I., Younas, M., &amp; Rezakazemi, M. (2023). Challenges and Solutions in Solar Photovoltaic Technology Life Cycle. <em>ChemBioEng Reviews</em>. <a href="https://doi.org/10.1002/cben.202300002">https://doi.org/10.1002/cben.202300002</a></li>
-      <li>Walzberg, J., Carpenter, A., &amp; Heath, G. (2021). Integrating sociotechnical factors to assess efficacy of PV recycling and reuse interventions. <a href="https://doi.org/10.21203/rs.3.rs-151153/v1">https://doi.org/10.21203/rs.3.rs-151153/v1</a></li>
+      <li>Acharya, A., Verma, A. R., &amp; Bolia, N. B. (2024). Effective collection of end-of-life solar panels through an incentive-based model. <em>Solar Energy, 268</em>, 112215. <a href="https://doi.org/10.1016/j.solener.2023.112215" target="_blank" rel="noopener">https://doi.org/10.1016/j.solener.2023.112215</a></li>
+      <li>Agyeman, E., Quansah, D. A., Ntiamoah, A., Mensah, L. D., &amp; Ramde, E. W. (2025). Toward a circular economy in Ghana's renewable energy sector: A quantitative assessment of waste from solar photovoltaic modules in Ghana. <em>International Journal of Green Energy</em>. <a href="https://doi.org/10.1080/15435075.2025.2469136" target="_blank" rel="noopener">https://doi.org/10.1080/15435075.2025.2469136</a></li>
+      <li>Amrollahi Biyouki, Z., Zaman, A., Marinova, D., Minunno, R., &amp; Shayegan, M. A. (2024). Solar Photovoltaics Value Chain and End-of-Life Management Practices: A Systematic Literature Review. <em>Sustainability, 16</em>(16), 7038. <a href="https://doi.org/10.3390/su16167038" target="_blank" rel="noopener">https://doi.org/10.3390/su16167038</a></li>
+      <li>Anusuya, K., Vijayakumar, K., &amp; Manikandan, S. (2023). From efficiency to eternity: A holistic review of photovoltaic panel degradation and End-of-Life management. <em>Solar Energy, 264</em>, 112135. <a href="https://doi.org/10.1016/j.solener.2023.112135" target="_blank" rel="noopener">https://doi.org/10.1016/j.solener.2023.112135</a></li>
+      <li>Badza, K., Soro, Y. M., &amp; Sawadogo, M. (2024). Photovoltaic waste management in sub-Saharan Africa: current practices in Burkina Faso. <em>Waste Disposal &amp; Sustainable Energy, 2</em>(1), 1–11. <a href="https://doi.org/10.1007/s42768-023-00184-w" target="_blank" rel="noopener">https://doi.org/10.1007/s42768-023-00184-w</a></li>
+      <li>Bošnjaković, M., Galović, M., Kuprešak, J., &amp; Bošnjaković, T. (2023). The End of Life of PV Systems: Is Europe Ready for It? <em>Sustainability, 15</em>(23), 16466. <a href="https://doi.org/10.3390/su152316466" target="_blank" rel="noopener">https://doi.org/10.3390/su152316466</a></li>
+      <li>Cheema, H. A., Ilyas, S., Kang, H., &amp; Kim, H. (2023). Comprehensive review of the global trends and future perspectives for recycling of decommissioned photovoltaic panels. <em>Waste Management</em>. <a href="https://doi.org/10.1016/j.wasman.2023.11.025" target="_blank" rel="noopener">https://doi.org/10.1016/j.wasman.2023.11.025</a></li>
+      <li>Crozier, M. N., Ntsala, P. G., Schenck, C., McCleland, J. C., van Dyk, E. E., &amp; Petersen, J. (2025). Drivers, barriers and enablers of a South African circular solar PV module supply chain: A focus on reuse. <em>Waste Management &amp; Research</em>. <a href="https://doi.org/10.1177/0734242X251340306" target="_blank" rel="noopener">https://doi.org/10.1177/0734242X251340306</a></li>
+      <li>Damo, U. M., Ahmed, T., Ozoegwu, C. G., Sambo, A. S., Aktas, A., Akca, H., Alam, M., &amp; Bahaj, A. S. (2024). Solar PV potential in Africa for three generational time-scales: present, near future and far future. <em>Solar Energy, 273</em>, 112638. <a href="https://doi.org/10.1016/j.solener.2024.112638" target="_blank" rel="noopener">https://doi.org/10.1016/j.solener.2024.112638</a></li>
+      <li>Dhawan, N., &amp; Agrawal, S. (2022). Recycling of discarded photovoltaic solar modules for metal recovery. <em>Mining Metallurgy &amp; Exploration, 39</em>(6), 2379–2387. <a href="https://doi.org/10.1007/s42461-022-00699-6" target="_blank" rel="noopener">https://doi.org/10.1007/s42461-022-00699-6</a></li>
+      <li>Dias, P. R., Schmidt, L., Chang, N. L., Lunardi, M. M., Deng, R., Trigger, B., Gomes, L. B., Egan, R., &amp; Veit, H. (2022). High yield, low cost, environmentally friendly process to recycle silicon solar panels. <em>Renewable and Sustainable Energy Reviews, 169</em>, 112900. <a href="https://doi.org/10.1016/j.rser.2022.112900" target="_blank" rel="noopener">https://doi.org/10.1016/j.rser.2022.112900</a></li>
+      <li>Diez-Suarez, A. M., Martínez-Benavides, M., Donado, C. M., Blanes-Peiró, J. J., &amp; Torres, E. J. M. (2024). Recycling of Silicon-Based Photovoltaic Modules: Mediterranean Region Insight. <em>Energies, 17</em>(23), 6015. <a href="https://doi.org/10.3390/en17236015" target="_blank" rel="noopener">https://doi.org/10.3390/en17236015</a></li>
+      <li>Ding, Y., He, J., Zhang, S., Jian, J., Shi, Z., &amp; Cao, A. (2024). Efficient and comprehensive recycling of valuable components from scrapped Si-based photovoltaic panels. <em>Waste Management, 173</em>, 218–227. <a href="https://doi.org/10.1016/j.wasman.2023.12.052" target="_blank" rel="noopener">https://doi.org/10.1016/j.wasman.2023.12.052</a></li>
+      <li>Dong, D., Emem, O., Liu, L., Sen, B., Rasmussen, K., Edomah, N., Musango, J. K., Baninla, Y., Sergienko, O., &amp; Liu, G. (2025). Solar Photovoltaic Development in West Africa Will Face Million-Ton Waste Challenges, and Off-Grid Systems Will Dominate. <em>Environmental Science &amp; Technology</em>. <a href="https://doi.org/10.1021/acs.est.5c06339" target="_blank" rel="noopener">https://doi.org/10.1021/acs.est.5c06339</a></li>
+      <li>Farrell, C. C., Osman, A. I., Doherty, R., Saad, M., Zhang, X., Murphy, A., Harrison, J., Vennard, A. S. M., Kumaravel, V., Al-Muhtaseb, A. H., &amp; Rooney, D. W. (2020). Technical challenges and opportunities in realising a circular economy for waste photovoltaic modules. <em>Renewable and Sustainable Energy Reviews, 129</em>, 109911. <a href="https://doi.org/10.1016/j.rser.2020.109911" target="_blank" rel="noopener">https://doi.org/10.1016/j.rser.2020.109911</a></li>
+      <li>Granata, G., Altimari, P., Pagnanelli, F., &amp; De Greef, J. (2022). Recycling of solar photovoltaic panels: Techno-economic assessment in waste management perspective. <em>Journal of Cleaner Production, 363</em>, 132386. <a href="https://doi.org/10.1016/j.jclepro.2022.132385" target="_blank" rel="noopener">https://doi.org/10.1016/j.jclepro.2022.132385</a></li>
+      <li>Heath, G. A., Silverman, T. J., Kempe, M., Deceglie, M., Ravikumar, D., Remo, T., Cui, H., Sinha, P., Libby, C., Shaw, S., Komoto, K., Wambach, K., Butler, E., Barnes, T., &amp; Wade, A. (2020). Research and development priorities for silicon photovoltaic module recycling to support a circular economy. <em>Nature Energy, 5</em>(7), 541–552. <a href="https://doi.org/10.1038/s41560-020-0645-2" target="_blank" rel="noopener">https://doi.org/10.1038/s41560-020-0645-2</a></li>
+      <li>Hernández-López, D. A., Tariq, R., El Mekaoui, A., Bassam, A., De Lille, M. V., Ricalde, L. J., &amp; Riech, I. (2022). Does recycling solar panels make this renewable resource sustainable? <em>Sustainable Cities and Society, 76</em>, 103539. <a href="https://doi.org/10.1016/j.scs.2021.103539" target="_blank" rel="noopener">https://doi.org/10.1016/j.scs.2021.103539</a></li>
+      <li>Iakovou, E., Pistikopoulos, E. N., Walzberg, J., Iseri, F., Iseri, H., Chrisandina, N. J., Vedant, S., &amp; Nkoutche, C. (2024). Next-generation reverse logistics networks of photovoltaic recycling: Perspectives and challenges. <em>Solar Energy, 269</em>, 112329. <a href="https://doi.org/10.1016/j.solener.2024.112329" target="_blank" rel="noopener">https://doi.org/10.1016/j.solener.2024.112329</a></li>
+      <li>Keerthivasan, T., Madhesh, R., Srinivasan, M., &amp; Ramasamy, P. (2024). Photovoltaic recycling: enhancing silicon wafer recovery process from damaged solar panels. <em>Journal of Materials Science: Materials in Electronics</em>. <a href="https://doi.org/10.1007/s10854-024-12662-w" target="_blank" rel="noopener">https://doi.org/10.1007/s10854-024-12662-w</a></li>
+      <li>Liao, Q., Li, S., Xi, F., Tong, Z., Chen, X., Wan, X., Ma, W., &amp; Deng, R. (2023). High-performance silicon carbon anodes based on value-added recycling strategy of end-of-life photovoltaic modules. <em>Energy, 281</em>, 128345. <a href="https://doi.org/10.1016/j.energy.2023.128345" target="_blank" rel="noopener">https://doi.org/10.1016/j.energy.2023.128345</a></li>
+      <li>Miao, S., Zhang, Q., Liu, C., &amp; Wang, L. (2023). Can the deposit-return scheme promote recycling of waste PV modules in China? <em>Solar Energy, 264</em>, 112136. <a href="https://doi.org/10.1016/j.solener.2023.112136" target="_blank" rel="noopener">https://doi.org/10.1016/j.solener.2023.112136</a></li>
+      <li>Munro, P. G., Samarakoon, S., Hansen, U. E., Kearnes, M., Bruce, A., Cross, J., Walker, S., &amp; Zalengera, C. (2022). Towards a repair research agenda for off-grid solar e-waste in the Global South. <em>Nature Energy, 7</em>(9), 834–836. <a href="https://doi.org/10.1038/s41560-022-01103-9" target="_blank" rel="noopener">https://doi.org/10.1038/s41560-022-01103-9</a></li>
+      <li>Nain, P., &amp; Anctil, A. (2024). End-of-life solar photovoltaic waste management: A comparison as per European Union and United States regulatory approaches. <em>Resources, Conservation &amp; Recycling Advances, 21</em>, 200212. <a href="https://doi.org/10.1016/j.rcradv.2024.200212" target="_blank" rel="noopener">https://doi.org/10.1016/j.rcradv.2024.200212</a></li>
+      <li>Nain, P., &amp; Kumar, A. (2020a). Ecological and human health risk assessment of metals leached from end-of-life solar photovoltaics. <em>Environmental Pollution, 267</em>, 115393. <a href="https://doi.org/10.1016/j.envpol.2020.115393" target="_blank" rel="noopener">https://doi.org/10.1016/j.envpol.2020.115393</a></li>
+      <li>Nain, P., &amp; Kumar, A. (2020b). Metal dissolution from end-of-life solar photovoltaics in real landfill leachate versus synthetic solutions: One-year study. <em>Waste Management, 114</em>, 182–192. <a href="https://doi.org/10.1016/j.wasman.2020.07.004" target="_blank" rel="noopener">https://doi.org/10.1016/j.wasman.2020.07.004</a></li>
+      <li>Nain, P., &amp; Kumar, A. (2021). Understanding metal dissolution from solar photovoltaics in MSW leachate under standard waste characterization conditions for informing end-of-life photovoltaic waste management. <em>Waste Management, 123</em>, 137–146. <a href="https://doi.org/10.1016/j.wasman.2021.01.013" target="_blank" rel="noopener">https://doi.org/10.1016/j.wasman.2021.01.013</a></li>
+      <li>Nain, P., &amp; Kumar, A. (2022). A state-of-art review on end-of-life solar photovoltaics. <em>Journal of Cleaner Production, 343</em>, 130978. <a href="https://doi.org/10.1016/j.jclepro.2022.130978" target="_blank" rel="noopener">https://doi.org/10.1016/j.jclepro.2022.130978</a></li>
+      <li>Ngagoum Ndalloka, Z., Nair, H. V., Alpert, S., &amp; Schmid, C. (2024). Solar photovoltaic recycling strategies. <em>Solar Energy, 269</em>, 112379. <a href="https://doi.org/10.1016/j.solener.2024.112379" target="_blank" rel="noopener">https://doi.org/10.1016/j.solener.2024.112379</a></li>
+      <li>Niekurzak, M., Lewicki, J., Coban, M., &amp; Brelik, M. (2023). Conceptual Design of a Semi-Automatic Process Line for Recycling Photovoltaic Panels as a Way to Ecological Sustainable Production. <em>Sustainability, 15</em>(3), 2822. <a href="https://doi.org/10.3390/su15032822" target="_blank" rel="noopener">https://doi.org/10.3390/su15032822</a></li>
+      <li>Ofori, P. (2023). Circular economy practices in third world nations: challenges and implications for environmental sustainability. <em>Environment, Development and Sustainability</em>. <a href="https://doi.org/10.1007/s10668-023-03939-x" target="_blank" rel="noopener">https://doi.org/10.1007/s10668-023-03939-x</a></li>
+      <li>Okoroigwe, F. C., Okoroigwe, E. C., Ajayi, O. O., Agbo, S. N., &amp; Chukwuma, J. N. (2020). Photovoltaic Modules Waste Management: Ethical Issues for Developing Nations. <em>Energy Technology, 8</em>(10), 2000543. <a href="https://doi.org/10.1002/ente.202000543" target="_blank" rel="noopener">https://doi.org/10.1002/ente.202000543</a></li>
+      <li>Owusu-Sekyere, K., &amp; Aladago, D. A. (2023). Material flow analysis and risk evaluation of informal E-waste recycling processes in Ghana: Towards sustainable management strategies. <em>Journal of Cleaner Production, 433</em>, 139706. <a href="https://doi.org/10.1016/j.jclepro.2023.139706" target="_blank" rel="noopener">https://doi.org/10.1016/j.jclepro.2023.139706</a></li>
+      <li>Parikh, P., Wang, R., &amp; Meng, J. (2024). The potential and challenges of off-grid solar photovoltaics in resource-challenged settings: the case of sub-Saharan Africa. <em>Nature Reviews Materials, 9</em>(4), 263–274. <a href="https://doi.org/10.1038/s41578-024-00660-7" target="_blank" rel="noopener">https://doi.org/10.1038/s41578-024-00660-7</a></li>
+      <li>Petroli, P. A., Camargo, P. S. S., &amp; Veit, H. M. (2022). Assessment of the environmental toxicity of four photovoltaic module technologies in accordance with waste leaching standards. <em>Engenharia Sanitaria e Ambiental, 27</em>(6), 1144–1152. <a href="https://doi.org/10.1590/s1413-415220240083" target="_blank" rel="noopener">https://doi.org/10.1590/s1413-415220240083</a></li>
+      <li>Petroli, P. A., Camargo, P. S. S., Souza, R. A. D., &amp; Veit, H. M. (2024). Assessment of toxicity tests for photovoltaic panels: a review. <em>Current Opinion in Green and Sustainable Chemistry, 47</em>, 100885. <a href="https://doi.org/10.1016/j.cogsc.2024.100885" target="_blank" rel="noopener">https://doi.org/10.1016/j.cogsc.2024.100885</a></li>
+      <li>Preet, S., &amp; Smith, S. T. (2024). A comprehensive review on the recycling technology of silicon based photovoltaic solar panels: Challenges and future outlook. <em>Journal of Cleaner Production, 447</em>, 141661. <a href="https://doi.org/10.1016/j.jclepro.2024.141661" target="_blank" rel="noopener">https://doi.org/10.1016/j.jclepro.2024.141661</a></li>
+      <li>Rocha, Á. G., &amp; Neto, B. (2024). Circular Economy in Photovoltaics: An Analysis of Global Regulations and Their Implications in Brazil. <em>ARACÃŠ, 6</em>(3), 80–91. <a href="https://doi.org/10.56238/arev6n3-080" target="_blank" rel="noopener">https://doi.org/10.56238/arev6n3-080</a></li>
+      <li>Romano, P., Lanzone, C., Rahmati, S., Ippolito, N. M., Ferella, F., &amp; Vegliò, F. (2024). A Kinetic Study of Silver Extraction from End-of-Life Photovoltaic Panels through Gold-REC1 Process. <em>Sustainability, 16</em>(17), 7846. <a href="https://doi.org/10.3390/su16177846" target="_blank" rel="noopener">https://doi.org/10.3390/su16177846</a></li>
+      <li>Roy, M., Jha, M. K., &amp; Bhattacharya, S. (2024). Techno-economic perspectives on solar photovoltaic recycling as an emerging green manufacturing sector in India. <em>Microsystem Technologies</em>. <a href="https://doi.org/10.1007/s00542-024-05707-x" target="_blank" rel="noopener">https://doi.org/10.1007/s00542-024-05707-x</a></li>
+      <li>Singh, S., Powar, S., &amp; Dhar, A. (2023). End of life management of crystalline silicon and cadmium telluride photovoltaic modules utilising life cycle assessment. <em>Resources, Conservation and Recycling, 197</em>, 107097. <a href="https://doi.org/10.1016/j.resconrec.2023.107097" target="_blank" rel="noopener">https://doi.org/10.1016/j.resconrec.2023.107097</a></li>
+      <li>Tasnim, S. S., Hasan, M. M., Shammi, M., Tareq, S. M., &amp; Rahman, M. M. (2022). Current challenges and future perspectives of solar-PV cell waste in Bangladesh. <em>Heliyon, 8</em>(2), e08970. <a href="https://doi.org/10.1016/j.heliyon.2022.e08970" target="_blank" rel="noopener">https://doi.org/10.1016/j.heliyon.2022.e08970</a></li>
+      <li>Ullah, N., Ahmad, A., Sarfaraz, R., Khalid, S., Ali, I., Younas, M., &amp; Rezakazemi, M. (2023). Challenges and Solutions in Solar Photovoltaic Technology Life Cycle. <em>ChemBioEng Reviews</em>. <a href="https://doi.org/10.1002/cben.202300002" target="_blank" rel="noopener">https://doi.org/10.1002/cben.202300002</a></li>
+      <li>Walzberg, J., Carpenter, A., &amp; Heath, G. (2021). Integrating sociotechnical factors to assess efficacy of PV recycling and reuse interventions. <a href="https://doi.org/10.21203/rs.3.rs-151153/v1" target="_blank" rel="noopener">https://doi.org/10.21203/rs.3.rs-151153/v1</a></li>
     </ol>
   </div>
 
@@ -535,34 +328,5 @@
   &copy; Koomson &amp; Owusu &nbsp;·&nbsp; Kwame Nkrumah University of Science and Technology, Kumasi &nbsp;·&nbsp; All rights reserved
 </footer>
 
-<script>
-  function downloadPDF() {
-    const bar = document.getElementById('pdf-bar');
-    const btn = bar.querySelector('.btn-pdf');
-    btn.textContent = 'Generating PDF…';
-    btn.disabled = true;
-    bar.style.display = 'none';
-
-    const opt = {
-      margin: [10, 12, 10, 12],
-      filename: 'Koomson_Owusu_Ghana_EoL_PVs.pdf',
-      image: { type: 'jpeg', quality: 0.97 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
-
-    html2pdf().set(opt).from(document.body).save().then(() => {
-      bar.style.display = 'flex';
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF`;
-      btn.disabled = false;
-    });
-  }
-</script>
 </body>
 </html>
